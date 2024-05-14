@@ -1,40 +1,49 @@
 //In The Name of ALLAH
 #include<bits/stdc++.h>
 using namespace std;
-#define ll long long
-const int N = 107;
-vector<int> adj[N];
-bool vis[N];
+const int mod = 1e9 + 7;
+#define int long long
+const int N = 105;
+vector<int> g[N];
+int discover[N], finis[N];
 int timer;
-int discovert_time[N], finis_time[N];
-void dfs(int u) {
+bool vis[N];
+
+void dfs(int u, int p) {
 	vis[u] = true;
-	timer++;
-	discovert_time[u] = timer;
-	for(auto v : adj[u]) {
+	discover[u] = ++timer;
+	for(auto v : g[u]) {
 		if(!vis[v]) {
-			dfs(v);
+			dfs(v, u);
 		}
 	}
-	timer++;
-	finis_time[u] = timer;
+	finis[u] = ++timer;
 }
-int main() {
-	int n; cin >> n;
-	for(int i = 1; i <= n; i++) {
-		int u, x; cin >> u >> x;
-		while(x--) {
-			int v; cin >> v;
-			adj[u].push_back(v);
-		}
-		sort(adj[u].begin(), adj[u].end());
-	}
-	dfs(1);
-	for(int u = 1; u <= n; u++) {
-		cout << u << " " << discovert_time[u] << " " << finis_time[u] << "\n";
-	}
+int32_t main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int n; cin >> n;
+  for(int i = 1; i <= n; i++) {
+  	int u, k; cin >> u >> k;
+  	while(k--) {
+      int v; cin >> v;
+      g[u].push_back(v);
+  	}
+  }
+  for(int i = 1; i <= n; i++) {
+  	sort(g[i].begin(), g[i].end());
+  }
+  for(int i = 1; i <= n; i++) {
+    if(!vis[i]) {
+      dfs(i, 0);
+    }
+  }
+  for(int i = 1; i <= n; i++) {
+  	cout << i << " " << discover[i] << " " << finis[i] << endl;
+  }
   return 0;
 }
+
 
 // https://onlinejudge.u-aizu.ac.jp/problems/ALDS1_11_B 
 // https://prnt.sc/er4CWVjIgXka
